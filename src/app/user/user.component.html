@@ -16,11 +16,11 @@
         
         <td>
           <button class="btn btn-info"
-                        (click)="showEditProductForm(product)">
+                        (click)="showEditUserForm(user)">
                        <i class="fa fa-edit"></i>
               </button>
           <button class="btn btn-danger"
-                       (click)="removeProduct(product)">
+                       (click)="removeUser(user)">
                        <i class="fa fa-minus"></i>
             </button>
         </td>
@@ -29,52 +29,41 @@
   </table>
 
   <button class="btn btn-success"
-               (click)="showAddProductForm()"><i class="fa fa-plus"></i></button>
+               (click)="showAddUserForm()"><i class="fa fa-plus"></i></button>
   <br />
   <br />
 
-  <form *ngIf="productForm">
-    <h2>Add New Product</h2>
+  <form *ngIf="userForm">
+    <h2>Add New User</h2>
     <p>ID: <input type="text"
                            name="id"
-                           [(ngModel)]="newProduct.id" /></p>
+                           [(ngModel)]="newUser.id" /></p>
     <p>Name: <input type="text"
                                  name="name"
-                                 [(ngModel)]="newProduct.name" /></p>
-    <p>Description: <input type="text"
-                                          name="description"
-                                          [(ngModel)]="newProduct.description" /></p>
-    <p>Price: <input type="text"
-                                name="price"
-                                [(ngModel)]="newProduct.price" /></p>
+                                 [(ngModel)]="newUser.name" /></p>
     <p>
       <button type="button"
                    class="btn btn-primary"
-                   (click)="saveProduct(newProduct)">Submit</button>
+                   (click)="saveUser(newUser)">Submit</button>
       <button type="button"
                    class="btn btn-warning"
-                   (click)="cancelNewProduct()">Cancel</button>
+                   (click)="cancelNewUser()">Cancel</button>
     </p>
    </form>
 
-    <form *ngIf="editProductForm">
-    <h2>Edit Product Details</h2>
+    <form *ngIf="editUserForm">
+    <h2>Edit User Details</h2>
     <p>ID: <input type="text"
                            name="id"
-                           [(ngModel)]="editedProduct.id" /></p>
+                           [(ngModel)]="editedUser.id" /></p>
     <p>Name: <input type="text"
                                  name="name"
-                                 [(ngModel)]="editedProduct.name" /></p>
-    <p>Description: <input type="text"
-                                          name="description"
-                                          [(ngModel)]="editedProduct.description" /></p>
-    <p>Price: <input type="text"
-                                name="price"
-                                [(ngModel)]="editedProduct.price" /></p>
+                                 [(ngModel)]="editedUser.name" /></p>
+    
     <p>
       <button type="button"
                    class="btn btn-primary"
-                   (click)="updateProduct(editedProduct)">Submit</button>
+                   (click)="updateUser(editedUser)">Submit</button>
       <button type="button"
                    class="btn btn-warning"
                    (click)="cancelEdits()">Cancel</button>
