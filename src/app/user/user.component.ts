@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     this.getUsers();
   }
-  getUsers(){
+  getUsers=function(){
     this.users=this.userService.getUsersFromData();
   }
 
@@ -44,7 +44,7 @@ export class UserComponent implements OnInit {
     this.isNewUser=true;
 
   }
-  saveUser(user:User){
+  saveUser=function(user:User){
     if(this.isNewUser){
       //add a new user
       this.userService.addUser(user);
