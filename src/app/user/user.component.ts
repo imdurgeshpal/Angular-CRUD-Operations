@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import{UserService} from './user.service';
-import  {User}from './user';
-import {clone} from 'lodash';
+import { UserService } from './user.service';
+import { User } from './user';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -9,64 +8,64 @@ import {clone} from 'lodash';
 })
 export class UserComponent implements OnInit {
 
-  users:User[];
-  userForm:boolean=false;
-  isNewUser:boolean;
-  newUser:any={};
-  editUserForm:boolean=false;
-  editedUser:any={};
-  constructor(private userService:UserService) { }
+  users: User[];
+  userForm: boolean = false;
+  isNewUser: boolean;
+  newUser: any = {};
+  editUserForm: boolean = false;
+  editedUser: any = {};
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     this.getUsers();
   }
-  getUsers=function(){
-    this.users=this.userService.getUsersFromData();
+  getUsers = function () {
+    this.users = this.userService.getUsersFromData();
   }
 
-  showEditUserForm(user:User){
-    if(!user){
-      this.userForm=false;
+  showEditUserForm(user: User) {
+    if (!user) {
+      this.userForm = false;
       return;
     }
-    this.editUserForm=true;
-    this.editedUser=clone(user);
+    this.editUserForm = true;
+    this.editedUser = user;
 
 
   }
-  showAddUserForm(){
+  showAddUserForm() {
 
     // resets form if edited user
-    if(this.users.length){
-      this.newUser={};
+    if (this.users.length) {
+      this.newUser = {};
     }
-    this.userForm=true;
-    this.isNewUser=true;
+    this.userForm = true;
+    this.isNewUser = true;
 
   }
-  saveUser=function(user:User){
-    if(this.isNewUser){
+  saveUser = function (user: User) {
+    if (this.isNewUser) {
       //add a new user
       this.userService.addUser(user);
     }
-    this.userForm=false;
+    this.userForm = false;
   }
-  updateUser(){
+  updateUser() {
     this.userService.updateUser(this.editedUser);
-    this.editUserForm=false;
-    this.editedUser={};
+    this.editUserForm = false;
+    this.editedUser = {};
   }
 
-  removeUser(user:User){
+  removeUser(user: User) {
     this.userService.deleteUser(user);
   }
-  cancelEdits(){
-    this.editedUser={};
-    this.editUserForm=false;
+  cancelEdits() {
+    this.editedUser = {};
+    this.editUserForm = false;
   }
 
-  cancelNewUser(){
-    this.newUser={};
-    this.userForm=false;
+  cancelNewUser() {
+    this.newUser = {};
+    this.userForm = false;
   }
 }
