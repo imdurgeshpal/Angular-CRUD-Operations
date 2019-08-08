@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from './user.service';
-import { User } from './user';
+import { User } from '../models/user';
+import { UserService } from '../services/user.service';
+
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss']
 })
-export class UserComponent implements OnInit {
+export class UsersComponent implements OnInit {
 
   users: User[];
   userForm: boolean = false;
@@ -17,10 +18,11 @@ export class UserComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.getUsers();
+    this.users = this.getUsers();
   }
-  getUsers = function () {
-    this.users = this.userService.getUsersFromData();
+
+  getUsers(): User[] {
+    return this.userService.getUsersFromData();
   }
 
   showEditUserForm(user: User) {
@@ -30,11 +32,9 @@ export class UserComponent implements OnInit {
     }
     this.editUserForm = true;
     this.editedUser = user;
-
-
   }
-  showAddUserForm() {
 
+  showAddUserForm() {
     // resets form if edited user
     if (this.users.length) {
       this.newUser = {};
@@ -43,13 +43,15 @@ export class UserComponent implements OnInit {
     this.isNewUser = true;
 
   }
-  saveUser = function (user: User) {
+
+  saveUser(user: User) {
     if (this.isNewUser) {
       //add a new user
       this.userService.addUser(user);
     }
     this.userForm = false;
   }
+
   updateUser() {
     this.userService.updateUser(this.editedUser);
     this.editUserForm = false;
@@ -59,6 +61,7 @@ export class UserComponent implements OnInit {
   removeUser(user: User) {
     this.userService.deleteUser(user);
   }
+
   cancelEdits() {
     this.editedUser = {};
     this.editUserForm = false;
@@ -68,4 +71,5 @@ export class UserComponent implements OnInit {
     this.newUser = {};
     this.userForm = false;
   }
+
 }
