@@ -5,6 +5,7 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class UserService {
+
   private upersons: User[] = [
     {
       id: 1,
@@ -16,7 +17,8 @@ export class UserService {
       firstName: 'Ankur',
       lastName: 'Pal'
     }
-  ]
+  ];
+
   constructor() { }
 
   getUsersFromData(): User[] {
@@ -29,7 +31,7 @@ export class UserService {
 
   }
   updateUser(user: User) {
-    let index = this.upersons.findIndex(u => user.id === u.id);
+    const index = this.upersons.findIndex(u => user.id === u.id);
     this.upersons[index] = user;
   }
   deleteUser(user: User) {

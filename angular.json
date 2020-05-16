@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "AngularCrudOperations": {
+    "Angular-CRUD-Operations": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,19 +17,18 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/AngularCrudOperations",
+            "outputPath": "dist/Angular-CRUD-Operations",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/font-awesome/scss/font-awesome.scss",
               "src/styles.scss"
             ],
             "scripts": []
@@ -47,7 +46,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -69,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "AngularCrudOperations:build"
+            "browserTarget": "Angular-CRUD-Operations:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "AngularCrudOperations:build:production"
+              "browserTarget": "Angular-CRUD-Operations:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "AngularCrudOperations:build"
+            "browserTarget": "Angular-CRUD-Operations:build"
           }
         },
         "test": {
@@ -117,16 +115,19 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "AngularCrudOperations:serve"
+            "devServerTarget": "Angular-CRUD-Operations:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "AngularCrudOperations:serve:production"
+              "devServerTarget": "Angular-CRUD-Operations:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "AngularCrudOperations"
+  "defaultProject": "Angular-CRUD-Operations",
+  "cli": {
+    "analytics": "1dc474a2-53c6-43c8-90bc-1675a49192c8"
+  }
 }
