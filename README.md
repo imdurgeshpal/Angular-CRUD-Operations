@@ -35,4 +35,4 @@ Angular CRUD operations
   * Update
   * Delete
 
-![picture](../src/assets/CRUD.gif)
+![picture](./src/assets/CRUD.gif)
