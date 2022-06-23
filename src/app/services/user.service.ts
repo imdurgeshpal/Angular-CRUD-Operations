@@ -1,41 +1,40 @@
-import { Injectable } from '@angular/core';
-import { User } from '../models/user';
+import { Injectable } from "@angular/core";
+import { User } from "../models/user";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class UserService {
-
-  private upersons: User[] = [
+  private users = [
     {
       id: 1,
-      firstName: 'Durgesh',
-      lastName: 'Pal'
+      firstName: "Durgesh",
+      lastName: "Pal",
     },
     {
       id: 2,
-      firstName: 'Ankur',
-      lastName: 'Pal'
-    }
+      firstName: "Ankur",
+      lastName: "Pal",
+    },
   ];
 
   constructor() { }
 
-  getUsersFromData(): User[] {
-    return this.upersons;
+  getAllUsers(): User[] {
+    return this.users;
   }
 
   addUser(user: User) {
-    user.id = this.upersons.length + 1;
-    this.upersons.push(user);
-
+    user.id = this.users.length + 1;
+    this.users.push(user);
   }
+
   updateUser(user: User) {
-    const index = this.upersons.findIndex(u => user.id === u.id);
-    this.upersons[index] = user;
-  }
-  deleteUser(user: User) {
-    this.upersons.splice(this.upersons.indexOf(user), 1);
+    const index = this.users.findIndex((u) => user.id === u.id);
+    this.users[index] = user;
   }
 
+  deleteUser(user: User) {
+    this.users.splice(this.users.indexOf(user), 1);
+  }
 }

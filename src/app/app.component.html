@@ -1,4 +1,62 @@
-<div class="container">
+<div class="d-flex flex-column mt-4">
+  <table
+    mat-table
+    [dataSource]="users"
+    class="mat-elevation-z8 align-self-center"
+  >
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Id.</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef>First Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef>Last Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="showEditUserForm(element)">
+          <mat-icon>launch</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="removeUser(element)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <div class="align-self-center mt-4">
+    <mat-card>
+      <form>
+        <mat-card-title> Add/Edit User </mat-card-title>
+        <mat-form-field appearance="standard" class="mr-2">
+          <mat-label>First Name</mat-label>
+          <input matInput placeholder="First Name" />
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Last Name</mat-label>
+          <input matInput placeholder="Last Name" />
+        </mat-form-field>
+        <mat-card-actions>
+          <button mat-flat-button class="mr-2" color="primary">Save</button>
+          <button mat-flat-button color="warn">Reset</button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
+  </div>
+</div>
+
+<!-- <div class="container">
   <div class="row">
     <div class="col-md-12 mt-4">
       <h1 class="text-center">User List</h1>
@@ -18,36 +76,99 @@
             <td>{{ user.lastName }}</td>
 
             <td>
-              <button type="button" class="btn btn-info btn-sm mr-2" (click)="showEditUserForm(user)">Edit</button>
+              <button
+                type="button"
+                class="btn btn-info btn-sm mr-2"
+                (click)="showEditUserForm(user)"
+              >
+                Edit
+              </button>
 
-              <button type="button" class="btn btn-danger btn-sm" (click)="removeUser(user)">Delete</button>
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="removeUser(user)"
+              >
+                Delete
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <button class="btn btn-success" (click)="showAddUserForm()">Add New User</button>
+      <button class="btn btn-success" (click)="showAddUserForm()">
+        Add New User
+      </button>
 
       <div class="mt-4">
         <form *ngIf="userForm">
           <h2>Add New User</h2>
-          <p>First Name: <input type="text" name="firstName" [(ngModel)]="newUser.firstName" /></p>
-          <p>Last Name: <input type="text" name="lastName" [(ngModel)]="newUser.lastName" /></p>
           <p>
-            <button type="button" class="btn btn-primary mr-2" (click)="saveUser(newUser)">Submit</button>
-            <button type="button" class="btn btn-warning" (click)="cancelNewUser()">Cancel</button>
+            First Name:
+            <input
+              type="text"
+              name="firstName"
+              [(ngModel)]="newUser.firstName"
+            />
+          </p>
+          <p>
+            Last Name:
+            <input type="text" name="lastName" [(ngModel)]="newUser.lastName" />
+          </p>
+          <p>
+            <button
+              type="button"
+              class="btn btn-primary mr-2"
+              (click)="saveUser(newUser)"
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              class="btn btn-warning"
+              (click)="cancelNewUser()"
+            >
+              Cancel
+            </button>
           </p>
         </form>
 
         <form *ngIf="editUserForm">
           <h2>Edit User Details</h2>
-          <p>First Name: <input type="text" name="firstName" [(ngModel)]="editedUser.firstName" /></p>
-          <p>Last Name: <input type="text" name="lastName" [(ngModel)]="editedUser.lastName" /></p>
           <p>
-            <button type="button" class="btn btn-primary mr-2" (click)="updateUser()">Submit</button>
-            <button type="button" class="btn btn-warning" (click)="cancelEdits()">Cancel</button>
+            First Name:
+            <input
+              type="text"
+              name="firstName"
+              [(ngModel)]="editedUser.firstName"
+            />
+          </p>
+          <p>
+            Last Name:
+            <input
+              type="text"
+              name="lastName"
+              [(ngModel)]="editedUser.lastName"
+            />
+          </p>
+          <p>
+            <button
+              type="button"
+              class="btn btn-primary mr-2"
+              (click)="updateUser()"
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              class="btn btn-warning"
+              (click)="cancelEdits()"
+            >
+              Cancel
+            </button>
           </p>
         </form>
       </div>
     </div>
   </div>
 </div>
+ -->

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { User } from './models/user';
 import { UserService } from './services/user.service';
 
@@ -9,6 +10,13 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent implements OnInit {
 
+  form = this.fb.group({
+    firstName: [],
+    lastName: [],
+  });
+
+  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'action'];
+
   users: User[];
   userForm: boolean;
   isNewUser: boolean;
@@ -16,14 +24,14 @@ export class AppComponent implements OnInit {
   editUserForm: boolean;
   editedUser: any = {};
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.users = this.getUsers();
   }
 
   getUsers(): User[] {
-    return this.userService.getUsersFromData();
+    return this.userService.getAllUsers();
   }
 
   showEditUserForm(user: User) {
@@ -36,18 +44,15 @@ export class AppComponent implements OnInit {
   }
 
   showAddUserForm() {
-    // resets form if edited user
     if (this.users.length) {
       this.newUser = {};
     }
     this.userForm = true;
     this.isNewUser = true;
-
   }
 
   saveUser(user: User) {
     if (this.isNewUser) {
-      // add a new user
       this.userService.addUser(user);
     }
     this.userForm = false;
