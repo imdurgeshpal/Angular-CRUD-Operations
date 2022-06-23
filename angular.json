@@ -121,7 +121,6 @@
       }
     }
   },
-  "defaultProject": "Angular-CRUD-Operations",
   "cli": {
     "analytics": "1dc474a2-53c6-43c8-90bc-1675a49192c8"
   }
