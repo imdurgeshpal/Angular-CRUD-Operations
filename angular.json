@@ -27,7 +27,7 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/theme.scss",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -97,22 +97,10 @@
               "src/assets"
             ],
             "styles": [
+              "src/theme.scss",
               "src/styles.scss"
             ],
             "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         },
         "e2e": {
@@ -134,7 +122,6 @@
       }
     }
   },
-  "defaultProject": "Angular-CRUD-Operations",
   "cli": {
     "analytics": "1dc474a2-53c6-43c8-90bc-1675a49192c8"
   }

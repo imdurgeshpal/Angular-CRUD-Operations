@@ -1,76 +1,69 @@
-import { Component, OnInit } from '@angular/core';
-import { User } from './models/user';
-import { UserService } from './services/user.service';
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { FormBuilder, Validators } from "@angular/forms";
+import { User } from "./models/user";
+import { UserService } from "./services/user.service";
+import { ModeEnum } from "./enum/mode.enum";
+import { MatTable } from "@angular/material/table";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
+  form = this.fb.group({
+    id: [],
+    firstName: ["", Validators.required],
+    lastName: ["", Validators.required],
+  });
+
+  ModeEnum = ModeEnum;
+  displayedColumns: string[] = ["id", "firstName", "lastName", "action"];
 
   users: User[];
-  userForm: boolean;
-  isNewUser: boolean;
-  newUser: any = {};
-  editUserForm: boolean;
-  editedUser: any = {};
+  mode = ModeEnum.NON;
+  @ViewChild(MatTable) table: MatTable<User>;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private fb: FormBuilder) { }
 
-  ngOnInit() {
-    this.users = this.getUsers();
+  ngAfterViewInit() {
+    this.setUsers();
   }
 
-  getUsers(): User[] {
-    return this.userService.getUsersFromData();
+  private setUsers() {
+    this.users = this.userService.getAllUsers();
+    this.table.renderRows();
   }
 
-  showEditUserForm(user: User) {
-    if (!user) {
-      this.userForm = false;
-      return;
+  editUser(user?: User) {
+    if (user) {
+      this.form.setValue(user);
+      this.mode = ModeEnum.EDIT;
+    } else {
+      this.mode = ModeEnum.ADD;
     }
-    this.editUserForm = true;
-    this.editedUser = user;
   }
 
-  showAddUserForm() {
-    // resets form if edited user
-    if (this.users.length) {
-      this.newUser = {};
-    }
-    this.userForm = true;
-    this.isNewUser = true;
+  saveUser() {
+    const user = this.form.value as User;
 
-  }
-
-  saveUser(user: User) {
-    if (this.isNewUser) {
-      // add a new user
+    if (this.mode === ModeEnum.ADD) {
       this.userService.addUser(user);
+    } else {
+      this.userService.updateUser(user);
     }
-    this.userForm = false;
-  }
-
-  updateUser() {
-    this.userService.updateUser(this.editedUser);
-    this.editUserForm = false;
-    this.editedUser = {};
+    this.form.reset();
+    this.setUsers();
+    this.mode = ModeEnum.NON;
+    this.cancel();
   }
 
   removeUser(user: User) {
     this.userService.deleteUser(user);
+    this.setUsers();
   }
 
-  cancelEdits() {
-    this.editedUser = {};
-    this.editUserForm = false;
+  cancel() {
+    this.mode = ModeEnum.NON;
   }
-
-  cancelNewUser() {
-    this.newUser = {};
-    this.userForm = false;
-  }
-
 }
