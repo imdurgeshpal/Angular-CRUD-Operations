@@ -1,63 +1,71 @@
 <div class="d-flex flex-column mt-4">
-  <div class="align-self-center mt-4">
-    <h1>User List</h1>
-  </div>
-  <table
-    mat-table
-    [dataSource]="users"
-    class="mat-elevation-z8 align-self-center"
-  >
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>Id.</th>
-      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="firstName">
-      <th mat-header-cell *matHeaderCellDef>First Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="lastName">
-      <th mat-header-cell *matHeaderCellDef>Last Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="editUser(element)">
-          <mat-icon>launch</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="removeUser(element)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-
-  <div class="align-self-center mt-4">
-    <button mat-raised-button type="button" (click)="editUser()">Add New User</button>
+  <div class="card align-self-center w-50">
+    <h4 class="card-header text-center">User List</h4>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id.</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user) {
+            <tr>
+              <th scope="row">{{ user.id }}</th>
+              <td>{{ user.firstName }}</td>
+              <td>{{ user.lastName }}</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary me-1" (click)="editUser(user)">
+                  Edit
+                </button>
+                <button type="button" class="btn btn-sm btn-danger" (click)="removeUser(user)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer text-center">
+      <button type="button" class="btn btn-info" (click)="addNewUser()">
+        Add New User
+      </button>
+    </div>
   </div>
 
-
-  <mat-card class="align-self-center mt-4" *ngIf="mode !==  ModeEnum.NON">
-    <form [formGroup]="form">
-      <mat-card-title> Add/Edit User </mat-card-title>
-      <mat-form-field appearance="standard" class="mr-2">
-        <mat-label>First Name</mat-label>
-        <input matInput placeholder="First Name" formControlName="firstName" />
-      </mat-form-field>
-      <mat-form-field appearance="standard">
-        <mat-label>Last Name</mat-label>
-        <input matInput placeholder="Last Name" formControlName="lastName" />
-      </mat-form-field>
-      <mat-card-actions>
-        <button mat-flat-button class="mr-2" type="button" color="primary" (click)="saveUser()">Submit</button>
-        <button mat-flat-button color="warn" type="button" (click)="cancel()">Cancel</button> 
-      </mat-card-actions>
-    </form>
-  </mat-card>
-</div>
+  @if (mode !==  ModeEnum.NON) {
+    <div class="card align-self-center w-50 mt-4">
+      <h4 class="card-header text-center">Add/Edit User</h4>
+      <div class="card-body">
+        <form [formGroup]="form">
+          <div class="mb-3 row">
+            <label for="firstName" class="col-sm-2 col-form-label">First Name</label>
+            <div class="col-sm-10">
+              <input type="text" id="firstName" placeholder="First Name" formControlName="firstName" class="form-control"
+                [class.is-invalid]="form.controls.firstName.invalid && form.controls.firstName.touched" />
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
+              <div class="col-sm-10">
+                <input type="text" id="lastName" placeholder="Last Name" formControlName="lastName" class="form-control"
+                  [class.is-invalid]="form.controls.lastName.invalid && form.controls.lastName.touched" />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer d-flex justify-content-end">
+            <button type="button" class="btn btn-sm btn-success me-1" (click)="saveUser()">
+              Submit
+            </button>
+            <button type="button" class="btn btn-sm btn-warning" (click)="cancel()">
+              Cancel
+            </button>
+          </div>
+        </div>
+      }
+    </div>

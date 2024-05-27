@@ -1,11 +1,12 @@
-import { Injectable } from "@angular/core";
-import { User } from "../models/user";
+import { Injectable } from '@angular/core';
+import { User } from '../models/user';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class UserService {
-  private users = [
+
+  private readonly users = [
     {
       id: 1,
       firstName: "Durgesh",
@@ -18,7 +19,6 @@ export class UserService {
     },
   ];
 
-  constructor() { }
 
   getAllUsers(): User[] {
     return this.users;
