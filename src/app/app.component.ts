@@ -1,50 +1,52 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
-import { User } from "./models/user";
-import { UserService } from "./services/user.service";
-import { ModeEnum } from "./enum/mode.enum";
-import { MatTable } from "@angular/material/table";
+
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { UserService } from './services/user.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { User } from './models/user';
+import { ModeEnum } from './models/mode.enum';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, ReactiveFormsModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
-export class AppComponent implements AfterViewInit {
-  form = this.fb.group({
-    id: [],
-    firstName: ["", Validators.required],
-    lastName: ["", Validators.required],
+export class AppComponent implements OnInit {
+  private userService = inject(UserService);
+  private fb = inject(FormBuilder);
+  protected form = this.fb.group({
+    id: [0],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
   });
+  protected ModeEnum = ModeEnum;
+  protected users!: User[];
+  protected mode = ModeEnum.NON;
 
-  ModeEnum = ModeEnum;
-  displayedColumns: string[] = ["id", "firstName", "lastName", "action"];
-
-  users: User[];
-  mode = ModeEnum.NON;
-  @ViewChild(MatTable) table: MatTable<User>;
-
-  constructor(private userService: UserService, private fb: FormBuilder) { }
-
-  ngAfterViewInit() {
+  ngOnInit(): void {
     this.setUsers();
   }
 
   private setUsers() {
     this.users = this.userService.getAllUsers();
-    this.table.renderRows();
   }
 
-  editUser(user?: User) {
-    if (user) {
-      this.form.setValue(user);
-      this.mode = ModeEnum.EDIT;
-    } else {
-      this.mode = ModeEnum.ADD;
+  protected addNewUser() {
+    this.mode = ModeEnum.ADD;
+  }
+
+  protected editUser(user: User) {
+    this.mode = ModeEnum.EDIT;
+    this.form.setValue(user);
+  }
+
+  protected saveUser() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
-  }
-
-  saveUser() {
     const user = this.form.value as User;
 
     if (this.mode === ModeEnum.ADD) {
@@ -52,18 +54,19 @@ export class AppComponent implements AfterViewInit {
     } else {
       this.userService.updateUser(user);
     }
-    this.form.reset();
     this.setUsers();
-    this.mode = ModeEnum.NON;
     this.cancel();
+
   }
 
-  removeUser(user: User) {
+
+  protected removeUser(user: User) {
     this.userService.deleteUser(user);
     this.setUsers();
   }
 
-  cancel() {
+  protected cancel() {
+    this.form.reset();
     this.mode = ModeEnum.NON;
   }
 }
