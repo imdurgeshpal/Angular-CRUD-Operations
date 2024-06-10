@@ -1,24 +1,44 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { User } from '../models/user';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
+  private http = inject(HttpClient);
 
   private readonly users = [
     {
       id: 1,
-      firstName: "Durgesh",
-      lastName: "Pal",
+      firstName: 'Durgesh',
+      lastName: 'Pal',
     },
     {
       id: 2,
-      firstName: "Ankur",
-      lastName: "Pal",
+      firstName: 'Ankur',
+      lastName: 'Pal',
     },
   ];
 
+  /**
+   * @deprecated api methods for testing only
+   * @returns 
+   */
+  getApiUsers() {
+    return this.http.get<User[]>('https://jsonplaceholder.typicode.com/users');
+  }
+
+  /**
+   * @deprecated api methods for testing only
+   * @returns 
+   */
+  addApiUser(user: User) {
+    return this.http.post<User>(
+      'https://jsonplaceholder.typicode.com/users',
+      user
+    );
+  }
 
   getAllUsers(): User[] {
     return this.users;

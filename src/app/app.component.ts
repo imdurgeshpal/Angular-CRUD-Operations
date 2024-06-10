@@ -16,14 +16,14 @@ import { ModeEnum } from './models/mode.enum';
 export class AppComponent implements OnInit {
   private userService = inject(UserService);
   private fb = inject(FormBuilder);
-  protected form = this.fb.group({
+  form = this.fb.group({
     id: [0],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
   });
-  protected ModeEnum = ModeEnum;
-  protected users!: User[];
-  protected mode = ModeEnum.NON;
+  ModeEnum = ModeEnum;
+  users!: User[];
+  mode = ModeEnum.NON;
 
   ngOnInit(): void {
     this.setUsers();
@@ -33,16 +33,16 @@ export class AppComponent implements OnInit {
     this.users = this.userService.getAllUsers();
   }
 
-  protected addNewUser() {
+  addNewUser() {
     this.mode = ModeEnum.ADD;
   }
 
-  protected editUser(user: User) {
+  editUser(user: User) {
     this.mode = ModeEnum.EDIT;
     this.form.setValue(user);
   }
 
-  protected saveUser() {
+  saveUser() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -60,12 +60,12 @@ export class AppComponent implements OnInit {
   }
 
 
-  protected removeUser(user: User) {
+  removeUser(user: User) {
     this.userService.deleteUser(user);
     this.setUsers();
   }
 
-  protected cancel() {
+  cancel() {
     this.form.reset();
     this.mode = ModeEnum.NON;
   }
