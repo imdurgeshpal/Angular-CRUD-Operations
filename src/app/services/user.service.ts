@@ -1,14 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-  private readonly users = [
+  private readonly users: User[] = [
     {
       id: 1,
       firstName: 'Durgesh',
@@ -23,17 +24,15 @@ export class UserService {
 
   /**
    * @deprecated api methods for testing only
-   * @returns 
    */
-  getApiUsers() {
+  getApiUsers(): Observable<User[]> {
     return this.http.get<User[]>('https://jsonplaceholder.typicode.com/users');
   }
 
   /**
    * @deprecated api methods for testing only
-   * @returns 
    */
-  addApiUser(user: User) {
+  addApiUser(user: User): Observable<User> {
     return this.http.post<User>(
       'https://jsonplaceholder.typicode.com/users',
       user
@@ -44,17 +43,22 @@ export class UserService {
     return this.users;
   }
 
-  addUser(user: User) {
+  addUser(user: User): void {
     user.id = this.users.length + 1;
     this.users.push(user);
   }
 
-  updateUser(user: User) {
+  updateUser(user: User): void {
     const index = this.users.findIndex((u) => user.id === u.id);
-    this.users[index] = user;
+    if (index !== -1) {
+      this.users[index] = user;
+    }
   }
 
-  deleteUser(user: User) {
-    this.users.splice(this.users.indexOf(user), 1);
+  deleteUser(user: User): void {
+    const index = this.users.findIndex((u) => user.id === u.id || user === u);
+    if (index !== -1) {
+      this.users.splice(index, 1);
+    }
   }
 }

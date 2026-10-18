@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import {
   HttpClient,
   provideHttpClient,
-  withInterceptorsFromDi,
+  withFetch,
 } from '@angular/common/http';
 
 describe('UserService', () => {
@@ -15,7 +15,7 @@ describe('UserService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withFetch()),
         {
           provide: HttpClient,
           useValue: httpClientSpy,

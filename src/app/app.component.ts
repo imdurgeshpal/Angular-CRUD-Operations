@@ -1,6 +1,11 @@
-
-import { Component, OnInit, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { UserService } from './services/user.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from './models/user';
@@ -8,65 +13,68 @@ import { ModeEnum } from './models/mode.enum';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  private userService = inject(UserService);
-  private fb = inject(FormBuilder);
-  form = this.fb.group({
+  private readonly userService = inject(UserService);
+  private readonly fb = inject(FormBuilder);
+
+  readonly ModeEnum = ModeEnum;
+
+  // Modern Angular Signals for reactive state
+  readonly users = signal<User[]>([]);
+  readonly mode = signal<ModeEnum>(ModeEnum.NON);
+  readonly isFormVisible = computed(() => this.mode() !== ModeEnum.NON);
+
+  readonly form = this.fb.group({
     id: [0],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
   });
-  ModeEnum = ModeEnum;
-  users!: User[];
-  mode = ModeEnum.NON;
 
   ngOnInit(): void {
     this.setUsers();
   }
 
-  private setUsers() {
-    this.users = this.userService.getAllUsers();
+  private setUsers(): void {
+    this.users.set(this.userService.getAllUsers());
   }
 
-  addNewUser() {
-    this.mode = ModeEnum.ADD;
+  addNewUser(): void {
+    this.mode.set(ModeEnum.ADD);
   }
 
-  editUser(user: User) {
-    this.mode = ModeEnum.EDIT;
+  editUser(user: User): void {
+    this.mode.set(ModeEnum.EDIT);
     this.form.setValue(user);
   }
 
-  saveUser() {
+  saveUser(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
     const user = this.form.value as User;
 
-    if (this.mode === ModeEnum.ADD) {
+    if (this.mode() === ModeEnum.ADD) {
       this.userService.addUser(user);
     } else {
       this.userService.updateUser(user);
     }
     this.setUsers();
     this.cancel();
-
   }
 
-
-  removeUser(user: User) {
+  removeUser(user: User): void {
     this.userService.deleteUser(user);
     this.setUsers();
   }
 
-  cancel() {
+  cancel(): void {
     this.form.reset();
-    this.mode = ModeEnum.NON;
+    this.mode.set(ModeEnum.NON);
   }
 }

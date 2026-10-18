@@ -56,7 +56,7 @@ describe('AppComponent', () => {
 
     // then: expect that any logic or treatment is done correctly
     expect(userServiceSpy.getAllUsers).toHaveBeenCalled();
-    expect(component.users.length).toEqual(2);
+    expect(component.users().length).toEqual(2);
   });
 
   it('should set mode to ADD when addNewUser is called', () => {
@@ -67,7 +67,7 @@ describe('AppComponent', () => {
     component.addNewUser();
 
     // then: expect mode to be set to ADD
-    expect(component.mode).toEqual(ModeEnum.ADD);
+    expect(component.mode()).toEqual(ModeEnum.ADD);
   });
 
   it('should set mode to EDIT and populate form with user data', () => {
@@ -82,7 +82,7 @@ describe('AppComponent', () => {
     component.editUser(user);
 
     // then: expect mode to be set to EDIT
-    expect(component.mode).toEqual(ModeEnum.EDIT);
+    expect(component.mode()).toEqual(ModeEnum.EDIT);
 
     // and: expect form to be populated with user data
     expect(component.form.value).toEqual(user);
@@ -101,14 +101,14 @@ describe('AppComponent', () => {
     component.saveUser();
 
     // then: expect the user to be added or updated based on the mode
-    if (component.mode === ModeEnum.ADD) {
+    if (component.mode() === ModeEnum.ADD) {
       expect(userServiceSpy.addUser).toHaveBeenCalledWith(userForm);
-    } else if (component.mode === ModeEnum.EDIT) {
+    } else if (component.mode() === ModeEnum.EDIT) {
       expect(userServiceSpy.updateUser).toHaveBeenCalledWith(userForm);
     }
 
     // and: expect the users to be updated
-    expect(component.users).toEqual(userServiceSpy.getAllUsers());
+    expect(component.users()).toEqual(userServiceSpy.getAllUsers());
   });
 
   it('should remove user', () => {
@@ -126,7 +126,7 @@ describe('AppComponent', () => {
     expect(userServiceSpy.deleteUser).toHaveBeenCalledWith(user);
 
     // and: expect the users to be updated
-    expect(component.users).toEqual(userServiceSpy.getAllUsers());
+    expect(component.users()).toEqual(userServiceSpy.getAllUsers());
   });
 
   it('should reset form and set mode to NON when cancel is called', () => {
@@ -141,6 +141,6 @@ describe('AppComponent', () => {
     });
 
     // and: expect mode to be set to NON
-    expect(component.mode).toEqual(ModeEnum.NON);
+    expect(component.mode()).toEqual(ModeEnum.NON);
   });
 });

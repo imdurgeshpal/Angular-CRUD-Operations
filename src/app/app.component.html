@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (user of users; track user) {
+          @for (user of users(); track user.id) {
             <tr>
               <th scope="row">{{ user.id }}</th>
               <td>{{ user.firstName }}</td>
@@ -26,6 +26,10 @@
                 </button>
               </td>
             </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="text-center text-muted">No users found</td>
+            </tr>
           }
         </tbody>
       </table>
@@ -37,7 +41,7 @@
     </div>
   </div>
 
-  @if (mode !==  ModeEnum.NON) {
+  @if (isFormVisible()) {
     <div class="card align-self-center w-50 mt-4">
       <h4 class="card-header text-center">Add/Edit User</h4>
       <div class="card-body">
